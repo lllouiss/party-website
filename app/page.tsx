@@ -1,101 +1,70 @@
-import Image from "next/image";
+import Link from "next/link";
+import { PARTY_CONFIG } from "@/lib/config";
+
+function Countdown({ eventDate }: { eventDate: Date }) {
+  const now = new Date();
+  const diff = eventDate.getTime() - now.getTime();
+  const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+  const hours = Math.max(0, Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+  return (
+    <div className="flex gap-8 items-end">
+      <div className="text-center">
+        <div className="font-display text-[80px] leading-none text-accent">{days}</div>
+        <div className="text-muted text-xs tracking-widest uppercase">Tage</div>
+      </div>
+      <div className="text-accent font-display text-[60px] leading-none mb-2">:</div>
+      <div className="text-center">
+        <div className="font-display text-[80px] leading-none text-accent">{String(hours).padStart(2, "0")}</div>
+        <div className="text-muted text-xs tracking-widest uppercase">Stunden</div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <main className="min-h-screen flex flex-col justify-between px-6 py-12 md:px-16 md:py-20 max-w-5xl mx-auto">
+      <div className="reveal-1">
+        <span className="text-muted text-xs tracking-[0.3em] uppercase font-mono">
+          Schülerparty — Anmeldung
+        </span>
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <div className="flex-1 flex flex-col justify-center py-16">
+        <div className="reveal-2">
+          <h1 className="font-display text-[clamp(72px,15vw,180px)] leading-none tracking-tight text-light">
+            {PARTY_CONFIG.name}
+          </h1>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <div className="reveal-3 mt-6 flex flex-col gap-2">
+          <div className="flex items-center gap-3">
+            <span className="w-8 h-px bg-accent block" />
+            <span className="text-sm text-light font-mono">{PARTY_CONFIG.date}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="w-8 h-px bg-muted block" />
+            <span className="text-sm text-muted font-mono">{PARTY_CONFIG.time} — {PARTY_CONFIG.location}</span>
+          </div>
+        </div>
+
+        <div className="reveal-4 mt-12">
+          <Countdown eventDate={PARTY_CONFIG.eventDate} />
+        </div>
+
+        <div className="reveal-5 mt-14">
+          <Link href="/register" className="btn-primary text-base">
+            Jetzt anmelden →
+          </Link>
+        </div>
+      </div>
+
+      <div className="reveal-6 border-t border-dim pt-6 flex justify-between items-center">
+        <span className="text-muted text-xs font-mono tracking-widest uppercase">
+          Eintritt {PARTY_CONFIG.price} CHF
+        </span>
+        <span className="text-muted text-xs font-mono">Gästeliste erforderlich</span>
+      </div>
+    </main>
   );
 }

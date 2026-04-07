@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Party Website — Schülerparty Anmeldung
 
-## Getting Started
+## Deploy auf Vercel
 
-First, run the development server:
+### 1. Vercel Postgres (Neon) einrichten
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. [Vercel Dashboard](https://vercel.com) → Storage → Create Database → Neon Postgres
+2. Projekt verknüpfen → `POSTGRES_URL` wird automatisch als Env-Variable gesetzt
+3. In der Neon Console das `setup.sql` ausführen (einmalig):
+
+```sql
+-- Inhalt von setup.sql einfügen und ausführen
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Im Vercel Dashboard unter **Settings → Environment Variables** setzen:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable         | Beschreibung                          |
+|-----------------|---------------------------------------|
+| `POSTGRES_URL`  | Automatisch von Neon gesetzt          |
+| `ADMIN_PASSWORD`| Passwort für `/admin`                 |
+| `SESSION_SECRET`| Mind. 32 Zeichen, zufällig generiert |
 
-## Learn More
+```bash
+# SESSION_SECRET generieren:
+openssl rand -base64 32
+```
 
-To learn more about Next.js, take a look at the following resources:
+Lokal: `.env.example` → `.env.local` kopieren und ausfüllen.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Deployen
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm i -g vercel
+vercel --prod
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Inhalte anpassen
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Gästeliste — `lib/guestlist.ts`
+Namen im Format `"vorname nachname"` (lowercase) eintragen:
+```ts
+export const GUESTLIST: string[] = [
+  "anna müller",
+  "ben schneider",
+];
+```
+
+### Party-Infos — `lib/config.ts`
+Name, Datum, Ort, Preis, TWINT-Nummer und Event-Datum anpassen.
+
+### Klassen — `lib/config.ts`
+`KLASSEN`-Array bearbeiten.
+
+---
+
+## Lokale Entwicklung
+
+```bash
+npm install
+cp .env.example .env.local
+# .env.local mit echten Werten befüllen
+npm run dev
+```
+
+## Routen
+
+| Route              | Beschreibung                            |
+|-------------------|-----------------------------------------|
+| `/`               | Startseite mit Countdown                |
+| `/register`       | Anmeldeformular (2 Schritte)            |
+| `/confirm?id=X`   | Bestätigungsseite                       |
+| `/admin/login`    | Admin-Login                             |
+| `/admin`          | Dashboard (Tabelle, Stats, Filter)      |
+| `/admin/export`   | CSV-Download                            |
