@@ -245,7 +245,7 @@ export default function RegisterPage() {
                 Ich verpflichte mich, den Eintrittsbetrag von{" "}
                 <span className="text-accent">
                   {hasPlusOne
-                    ? `${PARTY_CONFIG.price * 2} CHF (2 × ${PARTY_CONFIG.price} CHF, also eigener Preis + Begleitperson)`
+                    ? `${PARTY_CONFIG.price * 2} CHF (2 × ${PARTY_CONFIG.price} CHF, also eigener Betrag + Begleitperson)`
                     : `${PARTY_CONFIG.price} CHF`}
                 </span>{" "}
                 per TWINT zu bezahlen.
