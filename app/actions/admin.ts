@@ -5,7 +5,7 @@ import { getIronSession } from "iron-session";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { sessionOptions, SessionData } from "@/lib/session";
-import { togglePaid, togglePlusOnePaid, addToGuestlist, removeFromGuestlist } from "@/lib/db";
+import { togglePaid, togglePlusOnePaid, addToGuestlist, removeFromGuestlist, deleteRegistration } from "@/lib/db";
 
 async function requireAdmin() {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
@@ -62,4 +62,10 @@ export async function removeGuestAction(id: number): Promise<void> {
   await requireAdmin();
   await removeFromGuestlist(id);
   revalidatePath("/admin/guestlist");
+}
+
+export async function deleteRegistrationAction(id: number): Promise<void> {
+  await requireAdmin();
+  await deleteRegistration(id);
+  revalidatePath("/admin");
 }

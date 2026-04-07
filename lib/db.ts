@@ -140,3 +140,7 @@ export async function addToGuestlist(fullName: string): Promise<void> {
 export async function removeFromGuestlist(id: number): Promise<void> {
   await sql`DELETE FROM guestlist WHERE id = ${id}`;
 }
+
+export async function deleteRegistration(id: number): Promise<void> {
+  await sql`DELETE FROM registrations WHERE id = ${id}`;
+}

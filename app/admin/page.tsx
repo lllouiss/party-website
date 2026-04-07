@@ -3,7 +3,7 @@ import { getIronSession } from "iron-session";
 import { redirect } from "next/navigation";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { getAllRegistrations, getStats } from "@/lib/db";
-import { logoutAction, togglePaidAction, togglePlusOnePaidAction } from "@/app/actions/admin";
+import { logoutAction, togglePaidAction, togglePlusOnePaidAction, deleteRegistrationAction } from "@/app/actions/admin";
 import { PARTY_CONFIG } from "@/lib/config";
 
 type FilterType = "all" | "paid" | "unpaid";
@@ -93,7 +93,7 @@ export default async function AdminPage({
         <table className="w-full text-sm font-mono border-collapse">
           <thead>
             <tr className="border-b border-dim">
-              {["#", "Name", "Tel.", "Bezahlt", "Begleitperson", "Bezahlt (+1)", "Datum"].map((h) => (
+              {["#", "Name", "Tel.", "Bezahlt", "Begleitperson", "Bezahlt (+1)", "Datum", ""].map((h) => (
                 <th
                   key={h}
                   className="text-left text-xs text-muted uppercase tracking-widest py-3 px-3 font-normal whitespace-nowrap"
@@ -106,7 +106,7 @@ export default async function AdminPage({
           <tbody>
             {registrations.length === 0 && (
               <tr>
-                <td colSpan={7} className="py-12 text-center text-muted text-xs">
+                <td colSpan={8} className="py-12 text-center text-muted text-xs">
                   Keine Einträge.
                 </td>
               </tr>
@@ -114,7 +114,7 @@ export default async function AdminPage({
             {registrations.map((r) => (
               <tr
                 key={r.id}
-                className={`border-b border-dim ${r.paid ? "opacity-60" : ""}`}
+                className={`border-b border-dim group ${r.paid ? "opacity-60" : ""}`}
               >
                 <td className="py-3 px-3 text-muted text-xs">
                   #{String(r.id).padStart(4, "0")}
@@ -142,6 +142,22 @@ export default async function AdminPage({
                 </td>
                 <td className="py-3 px-3 text-muted text-xs whitespace-nowrap">
                   {formatDate(r.created_at)}
+                </td>
+                <td className="py-3 px-3">
+                  <form
+                    action={async () => {
+                      "use server";
+                      await deleteRegistrationAction(r.id);
+                    }}
+                  >
+                    <button
+                      type="submit"
+                      className="text-muted text-xs hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                      title="Eintrag löschen"
+                    >
+                      ✕
+                    </button>
+                  </form>
                 </td>
               </tr>
             ))}
