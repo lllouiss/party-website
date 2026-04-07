@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { getAllRegistrations, getStats } from "@/lib/db";
 import { logoutAction, togglePaidAction } from "@/app/actions/admin";
-import { Registration } from "@/lib/db";
 
 type FilterType = "all" | "paid" | "unpaid";
 
@@ -18,22 +17,6 @@ function formatDate(d: Date): string {
   });
 }
 
-function buildCsv(registrations: Registration[]): string {
-  const header = "ID,Vorname,Nachname,Klasse,+1 Vorname,+1 Nachname,Bezahlt,Angemeldet\n";
-  const rows = registrations.map((r) =>
-    [
-      r.id,
-      r.first_name,
-      r.last_name,
-      r.klasse,
-      r.plus_one_first_name ?? "",
-      r.plus_one_last_name ?? "",
-      r.paid ? "ja" : "nein",
-      new Date(r.created_at).toISOString(),
-    ].join(",")
-  );
-  return header + rows.join("\n");
-}
 
 export default async function AdminPage({
   searchParams,
