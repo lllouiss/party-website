@@ -1,11 +1,11 @@
 export const PARTY_CONFIG = {
-  name: "NACHT DER NÄCHTE",
-  date: "Samstag, 17. Mai 2025",
+  name: "Party 2026",
+  date: "Freitag, 27. Juni 2026",
   time: "21:00 Uhr",
   location: "Aula Kantonsschule Muster, Musterstadt",
   eventDate: new Date("2025-05-17T21:00:00"),
   price: 20,
-  twintNumber: "+41 79 123 45 67",
+  twintNumber: "+41 76 720 92 32",
   maxGuests: 200,
 };
 
