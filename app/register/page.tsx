@@ -3,7 +3,6 @@
 import { useFormState, useFormStatus } from "react-dom";
 import { useState, useEffect } from "react";
 import { registerAction, RegisterState } from "@/app/actions/register";
-import { KLASSEN } from "@/lib/config";
 import Link from "next/link";
 
 const initialState: RegisterState = {};
@@ -21,18 +20,14 @@ export default function RegisterPage() {
   const [state, formAction] = useFormState(registerAction, initialState);
   const [step, setStep] = useState<1 | 2>(1);
   const [hasPlusOne, setHasPlusOne] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    klasse: "",
-  });
+  const [formData, setFormData] = useState({ firstName: "", lastName: "", phone: "" });
 
   useEffect(() => {
     if (
       state.errors?.general ||
       state.errors?.firstName ||
       state.errors?.lastName ||
-      state.errors?.klasse
+      state.errors?.phone
     ) {
       setStep(1);
     }
@@ -65,17 +60,16 @@ export default function RegisterPage() {
           <>
             <input type="hidden" name="firstName" value={formData.firstName} />
             <input type="hidden" name="lastName" value={formData.lastName} />
-            <input type="hidden" name="klasse" value={formData.klasse} />
+            <input type="hidden" name="phone" value={formData.phone} />
           </>
         )}
 
+        {/* ── Schritt 1 ── */}
         {step === 1 && (
           <div className="space-y-8 reveal-4">
             {state.errors?.general && (
               <div className="border-l-2 border-red-500 pl-4 py-1">
-                <p className="text-red-400 text-sm font-mono">
-                  {state.errors.general[0]}
-                </p>
+                <p className="text-red-400 text-sm font-mono">{state.errors.general[0]}</p>
               </div>
             )}
 
@@ -93,9 +87,7 @@ export default function RegisterPage() {
                   autoComplete="given-name"
                 />
                 {state.errors?.firstName && (
-                  <p className="text-red-400 text-xs mt-2">
-                    {state.errors.firstName[0]}
-                  </p>
+                  <p className="text-red-400 text-xs mt-2">{state.errors.firstName[0]}</p>
                 )}
               </div>
 
@@ -112,29 +104,25 @@ export default function RegisterPage() {
                   autoComplete="family-name"
                 />
                 {state.errors?.lastName && (
-                  <p className="text-red-400 text-xs mt-2">
-                    {state.errors.lastName[0]}
-                  </p>
+                  <p className="text-red-400 text-xs mt-2">{state.errors.lastName[0]}</p>
                 )}
               </div>
             </div>
 
             <div>
               <label className="block text-xs text-muted uppercase tracking-widest mb-3">
-                Klasse
+                Telefonnummer
               </label>
-              <select name="klasse" className="field" defaultValue={formData.klasse}>
-                <option value="">— Klasse wählen —</option>
-                {KLASSEN.map((k) => (
-                  <option key={k} value={k}>
-                    {k}
-                  </option>
-                ))}
-              </select>
-              {state.errors?.klasse && (
-                <p className="text-red-400 text-xs mt-2">
-                  {state.errors.klasse[0]}
-                </p>
+              <input
+                name="phone"
+                type="tel"
+                className="field"
+                placeholder="+41 79 123 45 67"
+                defaultValue={formData.phone}
+                autoComplete="tel"
+              />
+              {state.errors?.phone && (
+                <p className="text-red-400 text-xs mt-2">{state.errors.phone[0]}</p>
               )}
             </div>
 
@@ -147,9 +135,9 @@ export default function RegisterPage() {
                   const fd = new FormData(form);
                   const fn = (fd.get("firstName") as string)?.trim();
                   const ln = (fd.get("lastName") as string)?.trim();
-                  const kl = (fd.get("klasse") as string)?.trim();
-                  if (!fn || !ln || !kl) return;
-                  setFormData({ firstName: fn, lastName: ln, klasse: kl });
+                  const ph = (fd.get("phone") as string)?.trim();
+                  if (!fn || !ln || !ph) return;
+                  setFormData({ firstName: fn, lastName: ln, phone: ph });
                   setStep(2);
                 }}
               >
@@ -159,15 +147,15 @@ export default function RegisterPage() {
           </div>
         )}
 
+        {/* ── Schritt 2 ── */}
         {step === 2 && (
           <div className="space-y-8 reveal-4">
             <div className="border-l-2 border-accent pl-4 py-1 space-y-1">
-              <p className="text-xs text-muted uppercase tracking-widest">
-                Du meldest an:
-              </p>
+              <p className="text-xs text-muted uppercase tracking-widest">Du meldest an:</p>
               <p className="text-light font-mono">
-                {formData.firstName} {formData.lastName} — {formData.klasse}
+                {formData.firstName} {formData.lastName}
               </p>
+              <p className="text-muted font-mono text-xs">{formData.phone}</p>
             </div>
 
             <div>
@@ -232,11 +220,7 @@ export default function RegisterPage() {
             )}
 
             <div className="flex gap-4 pt-4 flex-wrap">
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={() => setStep(1)}
-              >
+              <button type="button" className="btn-secondary" onClick={() => setStep(1)}>
                 ← Zurück
               </button>
               <SubmitButton label="Anmelden →" />

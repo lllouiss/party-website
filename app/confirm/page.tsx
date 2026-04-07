@@ -33,7 +33,6 @@ export default async function ConfirmPage({
           >
             <polyline points="8,32 24,48 56,16" />
           </svg>
-          {/* Corner accents */}
           <span className="absolute -top-1 -left-1 w-3 h-3 border-t-2 border-l-2 border-accent" />
           <span className="absolute -top-1 -right-1 w-3 h-3 border-t-2 border-r-2 border-accent" />
           <span className="absolute -bottom-1 -left-1 w-3 h-3 border-b-2 border-l-2 border-accent" />
@@ -41,20 +40,16 @@ export default async function ConfirmPage({
         </div>
       </div>
 
-      {/* Heading */}
       <div className="reveal-2 mb-10 text-center">
         <h1 className="font-display text-[clamp(48px,10vw,96px)] leading-none text-accent">
           BESTÄTIGT
         </h1>
-        <p className="text-muted text-sm font-mono mt-2">
-          Du stehst auf der Liste.
-        </p>
+        <p className="text-muted text-sm font-mono mt-2">Du stehst auf der Liste.</p>
       </div>
 
-      {/* Summary */}
-      <div className="reveal-3 border-t border-dim pt-8 space-y-4 mb-10">
+      <div className="reveal-3 border-t border-dim pt-8 mb-10">
         <Row label="Name" value={`${reg.first_name} ${reg.last_name}`} />
-        <Row label="Klasse" value={reg.klasse} />
+        <Row label="Telefon" value={reg.phone} />
         {reg.plus_one_first_name && (
           <Row
             label="+1 Person"
@@ -64,27 +59,21 @@ export default async function ConfirmPage({
         <Row label="Event" value={`${PARTY_CONFIG.name} — ${PARTY_CONFIG.date}`} />
       </div>
 
-      {/* Payment info */}
       <div className="reveal-4 border border-dim p-6 mb-10">
         <p className="text-xs text-muted uppercase tracking-widest mb-3">Eintritt</p>
         <p className="text-light font-mono text-sm leading-relaxed">
           Bezahle{" "}
-          <span className="text-accent font-mono">
-            {PARTY_CONFIG.price} CHF
-          </span>{" "}
-          {reg.plus_one_first_name ? (
+          <span className="text-accent">{PARTY_CONFIG.price} CHF</span>
+          {reg.plus_one_first_name && (
             <>
-              ×2 ={" "}
-              <span className="text-accent">{PARTY_CONFIG.price * 2} CHF total{" "}</span>
+              {" "}×2 = <span className="text-accent">{PARTY_CONFIG.price * 2} CHF total</span>
             </>
-          ) : null}
+          )}{" "}
           an der Tür oder per TWINT an{" "}
-          <span className="text-accent">{PARTY_CONFIG.twintNumber}</span>
-          .
+          <span className="text-accent">{PARTY_CONFIG.twintNumber}</span>.
         </p>
       </div>
 
-      {/* Footer */}
       <div className="reveal-5 flex justify-between items-center">
         <span className="text-muted text-xs font-mono">#{String(reg.id).padStart(4, "0")}</span>
         <Link href="/" className="text-muted text-xs hover:text-accent transition-colors">

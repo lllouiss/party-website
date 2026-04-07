@@ -14,6 +14,7 @@ export const KLASSEN = [
   "2a", "2b", "2c", "2d",
   "3a", "3b", "3c", "3d",
   "4a", "4b", "4c", "4d",
+  // KLASSEN wird nicht mehr verwendet (Klasse wurde durch Telefonnummer ersetzt)
   "5a", "5b", "5c",
   "Andere",
 ];

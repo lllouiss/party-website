@@ -12,16 +12,18 @@ export async function GET() {
 
   const registrations = await getAllRegistrations();
 
-  const header = "ID,Vorname,Nachname,Klasse,+1 Vorname,+1 Nachname,Bezahlt,Angemeldet\n";
+  const header =
+    "ID,Vorname,Nachname,Telefon,Bezahlt,+1 Vorname,+1 Nachname,+1 Bezahlt,Angemeldet\n";
   const rows = registrations.map((r) =>
     [
       r.id,
       `"${r.first_name}"`,
       `"${r.last_name}"`,
-      r.klasse,
-      r.plus_one_first_name ? `"${r.plus_one_first_name}"` : "",
-      r.plus_one_last_name ? `"${r.plus_one_last_name}"` : "",
+      `"${r.phone}"`,
       r.paid ? "ja" : "nein",
+      r.plus_one_first_name ? `"${r.plus_one_first_name}"` : "",
+      r.plus_one_last_name  ? `"${r.plus_one_last_name}"` : "",
+      r.plus_one_first_name ? (r.plus_one_paid ? "ja" : "nein") : "",
       new Date(r.created_at).toISOString(),
     ].join(",")
   );
