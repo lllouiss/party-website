@@ -3,14 +3,19 @@
 import { useFormState, useFormStatus } from "react-dom";
 import { useState, useEffect } from "react";
 import { registerAction, RegisterState } from "@/app/actions/register";
+import { PARTY_CONFIG } from "@/lib/config";
 import Link from "next/link";
 
 const initialState: RegisterState = {};
 
-function SubmitButton({ label }: { label: string }) {
+function SubmitButton({ label, disabled }: { label: string; disabled?: boolean }) {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" className="btn-primary" disabled={pending}>
+    <button
+      type="submit"
+      className="btn-primary disabled:opacity-30 disabled:cursor-not-allowed"
+      disabled={pending || disabled}
+    >
       {pending ? "Wird gesendet…" : label}
     </button>
   );
@@ -20,6 +25,7 @@ export default function RegisterPage() {
   const [state, formAction] = useFormState(registerAction, initialState);
   const [step, setStep] = useState<1 | 2>(1);
   const [hasPlusOne, setHasPlusOne] = useState(false);
+  const [agreedToPay, setAgreedToPay] = useState(false);
   const [formData, setFormData] = useState({ firstName: "", lastName: "", phone: "" });
 
   useEffect(() => {
@@ -219,11 +225,38 @@ export default function RegisterPage() {
               </div>
             )}
 
-            <div className="flex gap-4 pt-4 flex-wrap">
+            {/* Zahlungsverpflichtung */}
+            <label className="flex items-start gap-4 cursor-pointer group">
+              <div className="relative mt-0.5 shrink-0">
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  checked={agreedToPay}
+                  onChange={(e) => setAgreedToPay(e.target.checked)}
+                />
+                <div className="w-5 h-5 border border-muted peer-checked:border-accent peer-checked:bg-accent transition-colors" />
+                {agreedToPay && (
+                  <span className="absolute inset-0 flex items-center justify-center text-bg text-xs font-bold pointer-events-none">
+                    ✓
+                  </span>
+                )}
+              </div>
+              <span className="text-sm text-light leading-relaxed group-hover:text-accent transition-colors">
+                Ich verpflichte mich, den Eintrittsbetrag von{" "}
+                <span className="text-accent">
+                  {hasPlusOne
+                    ? `${PARTY_CONFIG.price * 2} CHF (2 × ${PARTY_CONFIG.price} CHF, also eigener Preis + Begleitperson)`
+                    : `${PARTY_CONFIG.price} CHF`}
+                </span>{" "}
+                per TWINT zu bezahlen.
+              </span>
+            </label>
+
+            <div className="flex gap-4 pt-2 flex-wrap">
               <button type="button" className="btn-secondary" onClick={() => setStep(1)}>
                 ← Zurück
               </button>
-              <SubmitButton label="Anmelden →" />
+              <SubmitButton label="Anmelden →" disabled={!agreedToPay} />
             </div>
           </div>
         )}
