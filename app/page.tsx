@@ -1,25 +1,6 @@
 import Link from "next/link";
 import { PARTY_CONFIG } from "@/lib/config";
-
-function Countdown({ eventDate }: { eventDate: Date }) {
-  const now = new Date();
-  const diff = eventDate.getTime() - now.getTime();
-  const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
-  const hours = Math.max(0, Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-  return (
-    <div className="flex gap-8 items-end">
-      <div className="text-center">
-        <div className="font-display text-[80px] leading-none text-accent">{days}</div>
-        <div className="text-muted text-xs tracking-widest uppercase">Tage</div>
-      </div>
-      <div className="text-accent font-display text-[60px] leading-none mb-2">:</div>
-      <div className="text-center">
-        <div className="font-display text-[80px] leading-none text-accent">{String(hours).padStart(2, "0")}</div>
-        <div className="text-muted text-xs tracking-widest uppercase">Stunden</div>
-      </div>
-    </div>
-  );
-}
+import Countdown from "./Countdown";
 
 export default function Home() {
   return (
@@ -44,7 +25,9 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-3">
             <span className="w-8 h-px bg-muted block" />
-            <span className="text-sm text-muted font-mono">{PARTY_CONFIG.time} — {PARTY_CONFIG.location}</span>
+            <span className="text-sm text-muted font-mono">
+              {PARTY_CONFIG.time} — {PARTY_CONFIG.location}
+            </span>
           </div>
         </div>
 
