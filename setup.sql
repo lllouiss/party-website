@@ -22,10 +22,3 @@ CREATE TABLE IF NOT EXISTS guestlist (
   id        SERIAL PRIMARY KEY,
   full_name VARCHAR(100) NOT NULL UNIQUE
 );
-
--- Initiale Einträge aus lib/guestlist.ts übernehmen
--- Weitere Namen hier oder via /admin/guestlist hinzufügen
-INSERT INTO guestlist (full_name) VALUES
-  ('louis wenk'),
-  ('janik muntwyler')
-ON CONFLICT DO NOTHING;

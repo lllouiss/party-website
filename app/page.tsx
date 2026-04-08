@@ -28,7 +28,7 @@ export default function Home() {
         {/* CTA */}
         <div className="reveal-4 mt-12">
           <Link href="/register" className="btn-primary text-base">
-            Jetzt anmelden →
+            Jetzt anmelden
           </Link>
         </div>
       </div>

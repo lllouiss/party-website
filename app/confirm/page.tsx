@@ -88,7 +88,7 @@ export default async function ConfirmPage({
       <div className="reveal-5 flex justify-between items-center">
         <span className="text-muted text-xs font-mono">#{String(reg.id).padStart(4, "0")}</span>
         <Link href="/" className="text-muted text-xs hover:text-accent transition-colors">
-          Zurück zur Startseite →
+          Zurück zur Startseite
         </Link>
       </div>
     </main>

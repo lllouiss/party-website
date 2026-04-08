@@ -48,7 +48,7 @@ export default async function AdminPage({
         </div>
         <div className="flex gap-3">
           <a href="/admin/guestlist" className="btn-secondary text-xs">
-            Gästeliste →
+            Gästeliste
           </a>
           <form action={logoutAction}>
             <button type="submit" className="btn-secondary text-xs">

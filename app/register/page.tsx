@@ -147,7 +147,7 @@ export default function RegisterPage() {
                   setStep(2);
                 }}
               >
-                Weiter →
+                Weiter
               </button>
             </div>
           </div>
@@ -256,7 +256,7 @@ export default function RegisterPage() {
               <button type="button" className="btn-secondary" onClick={() => setStep(1)}>
                 ← Zurück
               </button>
-              <SubmitButton label="Anmelden →" disabled={!agreedToPay} />
+              <SubmitButton label="Anmelden" disabled={!agreedToPay} />
             </div>
           </div>
         )}
